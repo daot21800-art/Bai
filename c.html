@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hàm Trong Lập Trình C - Slide Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F172A;
+            --bg-tile: #1E293B;
+            --bg-code: #020617;
+            --text-main: #CBD5E1;
+            --text-heading: #F8FAFC;
+            --accent-cyan: #06B6D4;
+            --accent-emerald: #10B981;
+            --border-color: #334155;
+            --kw-pink: #F472B6;
+            --fn-blue: #38BDF8;
+            --str-green: #A3E635;
+            --op-gray: #94A3B8;
+            --cm-slate: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #020617;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding: 40px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Slide Container */
+        .slide {
+            background-color: var(--bg-dark);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            height: 720px;
+            width: 1280px;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(6,182,212,0.05) 0%, rgba(15,23,42,0) 70%);
+            pointer-events: none;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-heading);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 { font-size: 80px; text-align: center; margin-top: 150px; line-height: 1.1; }
+        .slide-title { font-size: 42px; margin-bottom: 40px; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; width: 100%; }
+        .slide-title span { color: var(--accent-cyan); }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .tile {
+            background: var(--bg-tile);
+            padding: 35px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .tile i {
+            font-size: 50px;
+            color: var(--accent-emerald);
+            margin-bottom: 20px;
+        }
+
+        .tile h3 { margin-bottom: 15px; font-size: 24px; }
+        .tile p { color: var(--text-main); line-height: 1.6; font-size: 18px; }
+
+        /* Code Styling */
+        pre {
+            background: var(--bg-code);
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 17px;
+            border: 1px solid var(--border-color);
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .kw { color: var(--kw-pink); }
+        .fn { color: var(--fn-blue); }
+        .str { color: var(--str-green); }
+        .cm { color: var(--cm-slate); font-style: italic; }
+
+        ul { list-style: none; }
+        li { margin-bottom: 15px; font-size: 20px; color: var(--text-main); position: relative; padding-left: 30px; }
+        li::before { content: '→'; position: absolute; left: 0; color: var(--accent-cyan); font-weight: bold; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-tile);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        th { background: rgba(0,0,0,0.2); color: var(--accent-cyan); font-weight: 600; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            color: var(--cm-slate);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide">
+    <h1>Hàm Trong<br><span style="color: var(--accent-cyan);">Lập Trình C</span></h1>
+    <p style="text-align: center; color: var(--text-main); font-size: 24px; margin-top: 20px;">Tái sử dụng - Đóng gói - Chuyên nghiệp</p>
+    <div class="footer">Trang 1/11</div>
+</div>
+
+<!-- Slide 2: Why Functions -->
+<div class="slide">
+    <h2 class="slide-title">1. Khi nào <span>nên dùng hàm?</span></h2>
+    <div class="content">
+        <div class="grid-3">
+            <div class="tile">
+                <i class="fas fa-sync"></i>
+                <h3>Tái sử dụng</h3>
+                <p>Tránh viết lại cùng một đoạn mã ở nhiều nơi trong chương trình.</p>
+            </div>
+            <div class="tile">
+                <i class="fas fa-cubes"></i>
+                <h3>Chia nhỏ bài toán</h3>
+                <p>Giúp chương trình dễ quản lý, bảo trì và kiểm soát lỗi hiệu quả hơn.</p>
+            </div>
+            <div class="tile">
+                <i class="fas fa-shield-halved"></i>
+                <h3>Tính đóng gói</h3>
+                <p>Giấu đi sự phức tạp bên trong, chỉ quan tâm đến đầu vào và kết quả.</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">Trang 2/11</div>
+</div>
+
+<!-- Slide 3: Syntax -->
+<div class="slide">
+    <h2 class="slide-title">2. Cú pháp <span>tạo hàm</span></h2>
+    <div class="content">
+        <div class="grid-2">
+            <div>
+                <span class="badge">CẤU TRÚC CHUẨN</span>
+                <pre>
+<span class="kw">&lt;Kiểu_trả_về&gt;</span> <span class="fn">TenHam</span>(<span class="kw">&lt;Tham_số&gt;</span>) {
+    <span class="cm">// Các câu lệnh xử lý</span>
+    <span class="kw">return</span> <span class="str">&lt;Giá_trị&gt;</span>; 
+}</pre>
+                <p style="margin-top: 20px; color: var(--text-main);">Nếu kiểu trả về là <code style="color:var(--accent-cyan)">void</code>, hàm không cần lệnh return giá trị.</p>
+            </div>
+            <div>
+                <ul style="margin-top: 30px;">
+                    <li><strong>Kiểu_trả_về:</strong> int, float, char, void...</li>
+                    <li><strong>Tên_hàm:</strong> Nên đặt theo động từ (camelCase).</li>
+                    <li><strong>Tham_số:</strong> Các biến nhận dữ liệu đầu vào.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">Trang 3/11</div>
+</div>
+
+<!-- Slide 4: Example Return -->
+<div class="slide">
+    <h2 class="slide-title">3. Ví dụ: <span>Hàm có kiểu trả về</span></h2>
+    <div class="content">
+        <p style="margin-bottom: 20px;">Hàm trả về kết quả để sử dụng cho các tính toán khác.</p>
+        <pre>
+<span class="kw">int</span> <span class="fn">tinhDienTich</span>(<span class="kw">int</span> dai, <span class="kw">int</span> rong) {
+    <span class="kw">int</span> s <span class="op">=</span> dai <span class="op">*</span> rong;
+    <span class="kw">return</span> s; <span class="cm">// Trả về diện tích</span>
+}</pre>
+        <p style="margin-top: 20px; color: var(--accent-emerald);">→ Kết quả này có thể gán vào biến hoặc in ra màn hình.</p>
+    </div>
+    <div class="footer">Trang 4/11</div>
+</div>
+
+<!-- Slide 5: Example Void -->
+<div class="slide">
+    <h2 class="slide-title">4. Ví dụ: <span>Hàm không trả về (void)</span></h2>
+    <div class="content">
+        <p style="margin-bottom: 20px;">Hàm thực hiện một tác vụ cụ thể và kết thúc ngay sau đó.</p>
+        <pre>
+<span class="kw">void</span> <span class="fn">thongBaoLoi</span>() {
+    <span class="fn">printf</span>(<span class="str">"Lỗi: Giá trị nhập vào phải > 0!\n"</span>);
+}</pre>
+        <p style="margin-top: 20px; color: var(--kw-pink);">→ Thường dùng để in thông báo, vẽ giao diện, hoặc cập nhật trạng thái.</p>
+    </div>
+    <div class="footer">Trang 5/11</div>
+</div>
+
+<!-- Slide 6: Calling void -->
+<div class="slide">
+    <h2 class="slide-title">5. Cách gọi <span>hàm void</span></h2>
+    <div class="content">
+        <div class="tile" style="text-align: left;">
+            <p style="font-size: 22px; margin-bottom: 20px;">Gọi trực tiếp như một câu lệnh độc lập:</p>
+            <pre><span class="fn">TenHam</span>(doi_so);</pre>
+            <p style="margin-top: 20px;">Ví dụ thực tế:</p>
+            <pre><span class="fn">thongBaoLoi</span>();</pre>
+        </div>
+    </div>
+    <div class="footer">Trang 6/11</div>
+</div>
+
+<!-- Slide 7: Calling return -->
+<div class="slide">
+    <h2 class="slide-title">6. Cách gọi <span>hàm có giá trị trả về</span></h2>
+    <div class="content">
+        <ul>
+            <li><strong>Gán vào biến:</strong> <code style="color:var(--accent-cyan)">int dt = tinhDienTich(5, 4);</code></li>
+            <li><strong>Dùng trong biểu thức:</strong> <code style="color:var(--accent-cyan)">int total = tinhDienTich(5, 4) + 10;</code></li>
+            <li><strong>In trực tiếp:</strong> <code style="color:var(--accent-cyan)">printf("S = %d", tinhDienTich(5, 4));</code></li>
+        </ul>
+    </div>
+    <div class="footer">Trang 7/11</div>
+</div>
+
+<!-- Slide 8: Variables and Scope -->
+<div class="slide">
+    <h2 class="slide-title">7. Biến và <span>Tầm vức (Scope)</span></h2>
+    <div class="content">
+        <div class="grid-2">
+            <div class="tile">
+                <h3 style="color: var(--accent-cyan);">Biến toàn cục</h3>
+                <p>Khai báo ngoài mọi hàm. Có thể truy cập từ bất cứ đâu trong chương trình.</p>
+            </div>
+            <div class="tile">
+                <h3 style="color: var(--accent-emerald);">Biến cục bộ</h3>
+                <p>Khai báo trong { }. Chỉ hàm đó mới thấy và sử dụng được biến này.</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">Trang 8/11</div>
+</div>
+
+<!-- Slide 9: Parameters vs Arguments -->
+<div class="slide">
+    <h2 class="slide-title">8. Tham số <span>vs</span> Đối số</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div>
+                <h3>Tham số (Parameter)</h3>
+                <p>Biến khai báo ở tiêu đề hàm.</p>
+                <pre><span class="kw">void</span> <span class="fn">func</span>(<span class="kw">int</span> n); <span class="cm">// 'n' là tham số</span></pre>
+            </div>
+            <div>
+                <h3>Đối số (Argument)</h3>
+                <p>Giá trị thực truyền vào khi gọi.</p>
+                <pre><span class="fn">func</span>(<span class="str">10</span>); <span class="cm">// '10' là đối số</span></pre>
+            </div>
+        </div>
+    </div>
+    <div class="footer">Trang 9/11</div>
+</div>
+
+<!-- Slide 10: Parameter Passing -->
+<div class="slide">
+    <h2 class="slide-title">9. Các cách <span>truyền tham số</span></h2>
+    <div class="content">
+        <table>
+            <thead>
+                <tr>
+                    <th>Cách truyền</th>
+                    <th>Cú pháp</th>
+                    <th>Biến gốc sau hàm</th>
+                    <th>Bản chất</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tham trị</strong></td>
+                    <td><code>void tang(int x)</code></td>
+                    <td style="color: var(--kw-pink);">Không đổi</td>
+                    <td>Hàm dùng bản sao giá trị.</td>
+                </tr>
+                <tr>
+                    <td><strong>Địa chỉ</strong></td>
+                    <td><code>void tang(int *x)</code></td>
+                    <td style="color: var(--accent-emerald);">Bị thay đổi</td>
+                    <td>Hàm tác động trực tiếp vào ô nhớ.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">Trang 10/11</div>
+</div>
+
+<!-- Slide 11: Summary -->
+<div class="slide" style="text-align: center; justify-content: center;">
+    <h2 style="font-size: 60px; margin-bottom: 30px;">Tóm lại</h2>
+    <p style="font-size: 28px; color: var(--text-main);">Dùng hàm khi cần tái sử dụng code.</p>
+    <p style="font-size: 28px; color: var(--text-main);">Phân biệt rõ <strong>Tham trị</strong> (giữ nguyên) và <strong>Địa chỉ</strong> (thay đổi).</p>
+    <div style="margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 30px;">
+        <p style="color: var(--accent-cyan); font-weight: bold;">CHÚC BẠN HỌC TỐT!</p>
+    </div>
+    <div class="footer">Trang 11/11</div>
+</div>
+
+</body>
+</html>
